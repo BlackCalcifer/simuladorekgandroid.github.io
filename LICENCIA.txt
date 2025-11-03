@@ -1,0 +1,34 @@
+Monitor Clínico — Simulador Multiparámetro  
+Copyright (c) 2025 Juan David Sánchez García  
+Correo: jdzg1999@gmail.com | Tel: 3005988746  
+
+1. Propiedad Intelectual  
+Este software es propiedad exclusiva de Juan David Sánchez García y está protegido por la legislación colombiana en materia de derechos de autor (Ley 23 de 1982 y Ley 44 de 1993) y tratados internacionales de propiedad intelectual.  
+
+2. Licencia de Uso  
+Se otorga al usuario un permiso limitado, no exclusivo y personal para instalar y utilizar el software únicamente con fines educativos, de simulación clínica y personales.  
+
+3. Prohibiciones  
+Queda estrictamente prohibido:  
+  a) Reproducir, distribuir, vender, sublicenciar, alquilar, o explotar comercialmente el software sin autorización escrita del titular.  
+  b) Modificar, descompilar, desensamblar o realizar ingeniería inversa sobre el software.  
+  c) Eliminar, alterar o modificar cualquier aviso de copyright, marca o licencia incluida en el software.  
+  d) Usar el software para fines ilegales o que violen normas éticas de la práctica clínica o de simulación educativa.  
+
+4. Licencia Limitada Offline  
+Si el software se utiliza sin conexión a internet, se requerirá la introducción de una contraseña local asignada por el titular. La contraseña tiene un límite de usos offline, y si se excede, el acceso al software será bloqueado hasta restablecer la conexión a internet para validación de la licencia en línea.  
+
+5. Actualizaciones de Licencia  
+El titular se reserva el derecho de actualizar la contraseña de acceso y las condiciones de uso mediante verificación en línea. La no actualización o uso de versiones desactualizadas puede restringir el acceso al software.  
+
+6. Limitación de Responsabilidad  
+El software se proporciona “tal cual”, sin garantías de ningún tipo. El titular no se hace responsable de daños directos, indirectos, incidentales o consecuentes que puedan derivarse del uso del software, incluyendo pero no limitado a errores en simulación, pérdida de datos o daños a equipos.  
+
+7. Contacto y Soporte  
+Para consultas sobre licencia, soporte o uso autorizado, contactar al titular:  
+  - Correo: jdzg1999@gmail.com  
+  - Teléfono: 3005988746  
+
+8. Legislación Aplicable  
+Esta licencia se rige por las leyes de la República de Colombia. Cualquier controversia derivada del uso o distribución del software será sometida a la jurisdicción de los tribunales colombianos competentes.  
+

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Monitor Multiparámetro — Modular por Onda</title>
+    <link rel="stylesheet" href="stiles.css" />
+
+    <style>
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .panel.controls {
+        border: 1px solid #444;
+        padding: 10px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <h1>Monitor Simulador de situaciones clinicas</h1>
+      </div>
+    </header>
+    <div id="banner"></div>
+
+    <div class="wrap">
+	  <!-- CENTER: SCOPES -->
+	  <div class="panel" style="flex: 1; display: flex; flex-direction: column; gap: 1px;">
+
+		<!-- CANVAS 1 -->
+		<div class="scope" style="flex: 1; border-left: 3px solid var(--DI); position: relative;">
+		  <div style="position: absolute; top: 5px; right: 5px;"></div>
+		  <span class="label lead-label" style="color: var(--DI)">DI</span>
+		  <canvas id="DICanvas"></canvas>
+		</div>
+
+		<!-- CANVAS 2 -->
+		<div class="scope" style="flex: 1; border-left: 3px solid var(--DII); position: relative;">
+		  <div style="position: absolute; top: 5px; right: 5px;"></div>
+		  <span class="label lead-label" style="color: var(--DII)">DII</span>
+		  <canvas id="DIICanvas"></canvas>
+		</div>
+
+		<!-- CANVAS 3 -->
+		<div class="scope" style="flex: 1; border-left: 3px solid var(--DIII); position: relative;">
+		  <div style="position: absolute; top: 5px; right: 5px;"></div>
+		  <span class="label lead-label" style="color: var(--DIII)">DIII</span>
+		  <canvas id="DIIICanvas"></canvas>
+		</div>
+
+		<!-- CANVAS 4 -->
+		<div class="scope" style="flex: 1; border-left: 3px solid var(--AVR); position: relative;">
+		  <div style="position: absolute; top: 5px; right: 5px;"></div>
+		  <span class="label lead-label" style="color: var(--AVR)">AVR</span>
+		  <canvas id="AVRCanvas"></canvas>
+		</div>
+  </div>
+
+
+    <!-- FIN SCOPES -->
+
+    <!-- RIGHT: HUD -->
+    <div class="panel hud" style="width: 200px; min-width: 200px; max-width: 200px;">
+	  <div class="tile">
+		<div class="title" style="color: var(--DI)">FC</div>
+		<div class="big" id="hud_hr">--</div>
+		<div class="unit">FC (lpm)</div>
+	  </div>
+
+	  <div class="tile">
+		<div class="title" style="color: var(--DII)">SpO₂</div>
+		<div class="big" id="hud_spo2">--</div>
+		<div class="unit">Saturación (%)</div>
+	  </div>
+
+	  <div class="tile">
+		<div class="title" style="color: var(--DIII)">SISTOLICA / DIASTOLICA</div>
+		<div class="big" id="hud_bp">--/--</div>
+		<div class="unit">mmHg (MED)</div>
+	  </div>
+	  <div class="tile">
+		<div class="title" style="color: var(--AVR)">RESPIRACIONES</div>
+		<div class="big" id="hud_rr">--</div>
+		<div class="unit">rpm</div>
+	  </div>
+	  <div>
+		<button id="btnTratamiento" style="margin-top: 6px; width: 100%; padding: 6px; border-radius: 6px; background: var(--AVR); color: black; border: none; font-weight: bold; cursor: pointer;">
+		  Tratamiento
+		</button>
+	  </div>
+	        <div class="control-group">
+        <div class="kv">
+          <div style="font-weight: 400">Controles</div>
+          <div class="small">Modo UCI</div>
+        </div>
+
+        <label>Modo de inicio</label>
+        <select id="mode">
+          <option value="manual">Estable (manual)</option>
+          <option value="scenario">Escenario clínico</option>
+        </select>
+
+        <label>Escenarios clínicos <span class="badge">transición suave</span></label>
+        <select id="scenario">
+          <option value="stable">Ritmo sinusal</option>
+          <option value="taqsinus">Taquicardia sinusal</option>
+          <option value="bradisinu1">Bradicardia sinusal</option>
+          <option value="arritsinusa">Arritmia sinusal</option>
+          <option value="bloqueo1">Bloq tipo 1</option>
+          <option value="bmobitzuno1">Bloq tipo 2 mobitz 1</option>
+          <option value="bmobitzdos1">Bloqtipo 2 mobitz 2</option>
+          <option value="bttres1">Bloqueo tipo 3</option>
+          <option value="Infartoagudo1">IAMCEST</option>
+          <option value="fibrilacionauri1">Fib auricular</option>
+          <option value="fluter1">Fluter Auricular</option>
+          <option value="tsv1">TSV</option>
+          <option value="taqv1">taq ventricular</option>
+          <option value="torsionp1">Torsion de puntas</option>
+          <option value="fventri1">Fibrilacion ventri</option>
+          <option value="extrasis1">Extrasistole Ventricular</option>
+          <option value="aesp1">AESP</option>
+        </select>
+
+        
+      </div>
+
+      <!-- Columna 2: Ranges principales -->
+      <div class="control-group">
+        <label>Frecuencia cardíaca objetivo (bpm)</label>
+        <input id="ctrl_hr" type="range" min="1" max="220" value="75" />
+        <div class="small"><b id="lblCtrlHR">75</b> bpm</div>
+
+        <label>SpO₂ objetivo (%)</label>
+        <input id="ctrl_spo2" type="range" min="1" max="100" value="98" />
+        <div class="small"><b id="lblCtrlSpO2">98</b>%</div>
+
+        <label>SBP / DBP (mmHg)</label>
+        <div class="range-pair">
+          <div>
+            <input id="ctrl_sbp" type="range" min="1" max="220" value="120" />
+            <div class="small"><b id="lblCtrlSBP">120</b></div>
+          </div>
+          <div>
+            <input id="ctrl_dbp" type="range" min="1" max="140" value="75" />
+            <div class="small"><b id="lblCtrlDBP">75</b></div>
+          </div>
+        </div>
+		<label>Fr objetivo (rpm)</label>
+        <input id="ctrl_rr" type="range" min="1" max="40" value="16" />
+        <div class="small"><b id="lblCtrlRR">16</b> rpm</div>
+      </div>
+
+      <!-- Columna 3: Botones y Alarmas -->
+      <div class="control-group">
+        <div class="row">
+          <button id="btn_alarm_toggle" class="btn secondary">Alarm ON</button>
+          <button id="btnPopout" class="btn secondary">Iniciar</button>
+        </div>
+
+        <div class="alarm-label" style="margin-top: 5px; font-weight: 200">
+          Alarmas (umbral)
+        </div>
+		<P>SpO₂&lt</P>
+        <div class="row small">
+          <input id="thr_spo2" type="number" min="30" max="100" value="90" />
+        </div>
+		<P>FC&lt   -   FC&gt</P>
+        <div class="row small">
+          <input id="thr_hr_low" type="number" min="10" max="200" value="59" /> 
+          <input id="thr_hr_high" type="number" min="10" max="300" value="101" />
+        </div>
+		<P>PAD&lt   -   PAS&gt</P>
+        <div class="row small">
+          <input id="thr_sbp_low" type="number" min="30" max="200" value="110" /> |
+          <input id="thr_dbp_low" type="number" min="10" max="150" value="70" />
+        </div>
+		<P>-</P>
+      </div>
+	</div>
+
+
+    <!-- FIN HUD -->
+
+    <!-- BOTTOM: CONTROLES -->
+
+  <script>
+    /**
+     * WaveSection: clase para pintar trazados (canvas) tipo ECG.
+     * Recibe id del canvas, presets (objeto) y la clave por defecto.
+     */
+    function WaveSection(canvasId, presets, defaultKey) {
+      this.canvas = document.getElementById(canvasId);
+      if (!this.canvas) return console.warn('Canvas no encontrado:', canvasId);
+      this.ctx = this.canvas.getContext('2d');
+      this.presets = presets || {};
+      this.current = JSON.parse(JSON.stringify(this.presets[defaultKey] || {}));
+      this.current.baseSpeed = this.current.speed || 1;
+      this.phase = 0;
+      this.qrsTriggered = false;
+
+      this.resize = () => {
+        this.W = this.canvas.width = this.canvas.offsetWidth || 300;
+        this.H = this.canvas.height = this.canvas.offsetHeight || 100;
+        this.buf = new Array(this.W).fill(this.H / 2);
+      };
+
+      // Catmull-Rom spline para interpolación suave
+      this.catmullRom = (p0, p1, p2, p3, t) => {
+        const t2 = t * t, t3 = t2 * t;
+        return 0.5 * (
+          (2 * p1) +
+          (-p0 + p2) * t +
+          (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 +
+          (-p0 + 3 * p1 - 3 * p2 + p3) * t3
+        );
+      };
+
+      this.getValue = (phase, table) => {
+        table = table || [0];
+        const idx = phase * (table.length - 1);
+        const i1 = Math.floor(idx);
+        const t = idx - i1;
+        const p0 = table[(i1 - 1 + table.length) % table.length];
+        const p1 = table[i1];
+        const p2 = table[(i1 + 1) % table.length];
+        const p3 = table[(i1 + 2) % table.length];
+        return this.catmullRom(p0, p1, p2, p3, t);
+      };
+
+      this.draw = () => {
+        const ctx = this.ctx;
+        ctx.clearRect(0, 0, this.W, this.H);
+        // Grid
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 1;
+        const step = 10;
+        for (let x = 0; x < this.W; x += step) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, this.H); ctx.stroke();
+        }
+        for (let y = 0; y < this.H; y += step) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(this.W, y); ctx.stroke();
+        }
+
+        // Wave
+        ctx.strokeStyle = this.current.color || '#0f0';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < this.buf.length; i++) {
+          if (i === 0) ctx.moveTo(i, this.buf[i]);
+          else ctx.lineTo(i, this.buf[i]);
+        }
+        ctx.stroke();
+      };
+
+      this.tick = () => {
+        const dt = 1 / 60;
+        this.phase += dt * (this.current.speed || 1);
+        this.phase %= 1;
+        const v = this.getValue(this.phase, this.current.values || [0]) * (this.current.gain || 1);
+        const jitter = (Math.random() - 0.5) * 1;
+        const y = this.H / 2 - v + jitter;
+        const threshold = 0.8 * (this.current.gain || 1);
+
+        // lógica simple para detectar QRS y hacer beep
+        if (v > threshold && !this.qrsTriggered) {
+          if (typeof beep === 'function') beep();
+          this.qrsTriggered = true;
+        } else if (v < threshold / 2) {
+          this.qrsTriggered = false;
+        }
+
+        this.buf.push(y);
+        if (this.buf.length > this.W) this.buf.shift();
+        this.draw();
+        requestAnimationFrame(this.tick.bind(this));
+      };
+
+      this.setPreset = (key) => {
+        if (this.presets[key]) {
+          this.current = JSON.parse(JSON.stringify(this.presets[key]));
+          this.current.baseSpeed = this.current.speed;
+        }
+      };
+
+      window.addEventListener('resize', () => { this.resize(); this.draw(); });
+      this.resize();
+      this.tick();
+    }
+  </script>
+
+    <script src="DI.js" defer></script>
+    <script src="DII.js" defer></script>
+    <script src="DIII.js" defer></script>
+    <script src="AVR.js" defer></script>
+    <script src="script.js" defer></script>
+	<script src="tratamiento.js" defer></script>
+  </body>
+</html>
